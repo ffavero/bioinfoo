@@ -30,6 +30,10 @@ RDEPEND="${DEPEND}
 	dv? ( media-libs/libdv )
 	imagemagick? ( media-gfx/imagemagick )"
 
+src_prepare() {
+        epatch ${FILESDIR}/${P}-png.patch
+}
+
 src_configure() {
 	econf \
 		$(use_with ffmpeg) \
