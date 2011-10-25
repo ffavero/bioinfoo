@@ -4,7 +4,7 @@
 
 EAPI=4
 
-inherit eutils
+inherit eutils fdo-mime
 
 DESCRIPTION="Main UI of synfig: Film-Quality Vector Animation"
 HOMEPAGE="http://www.synfig.org/"
@@ -23,5 +23,13 @@ DEPEND="
 RDEPEND=${DEPEND}
 
 src_configure() {
-	econf $(use_with fmod libfmod )
+	econf \
+               $(use_with fmod libfmod ) \
+               --disable-update-mimedb
 }
+
+pkg_postinst() {
+	fdo-mime_desktop_database_update
+	fdo-mime_mime_database_update
+}
+
