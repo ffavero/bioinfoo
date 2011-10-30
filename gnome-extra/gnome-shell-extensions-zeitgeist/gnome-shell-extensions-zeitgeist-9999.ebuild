@@ -28,7 +28,7 @@ RDEPEND="${COMMON_DEPEND}
         x11-libs/gtk+:3[introspection]
         x11-libs/pango[introspection]"
 DEPEND="${COMMON_DEPEND}
-        >=gnome-extra/zeitgeist-0.8
+        >=gnome-extra/zeitgeist-0.8[fts]
         >=gnome-extra/zeitgeist-datahub-0.7
         sys-devel/gettext
         >=dev-util/pkgconfig-0.22
