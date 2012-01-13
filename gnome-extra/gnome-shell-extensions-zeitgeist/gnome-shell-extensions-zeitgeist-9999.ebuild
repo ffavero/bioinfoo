@@ -47,12 +47,12 @@ src_install()   {
 
 	if use hugo; then
 		insinto ${EXTENSIONS}
-        	doins -r hugo@gnome-shell-extensions.zeigeist-project.com
+        	doins -r hugo@gnome-shell-extensions.zeitgeist-project.com
 	fi
 
 	if use journal; then
 		insinto ${EXTENSIONS}
-        	doins -r journal@gnome-shell-extensions.zeigeist-project.com
+        	doins -r journal@gnome-shell-extensions.zeitgeist-project.com
 	fi
 
 	if use jump-list; then
@@ -66,7 +66,7 @@ src_install()   {
 	fi
 	if use smart-launcher; then
 		insinto ${EXTENSIONS}
-        	doins -r smart-launcher@gnome-shell-extensions.zeigeist-project.com
+        	doins -r smart-launcher@gnome-shell-extensions.zeitgeist-project.com
 	fi
 }
 
