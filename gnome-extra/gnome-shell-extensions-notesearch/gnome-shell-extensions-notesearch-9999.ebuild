@@ -38,7 +38,6 @@ DEPEND="${COMMON_DEPEND}
 	gnome-base/gnome-common"
 
 src_prepare() {
-	python_convert_shebangs 2 *.py
         ./autogen.sh --prefix=/usr
 }
 
