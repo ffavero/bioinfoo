@@ -57,7 +57,7 @@ src_install()   {
 
 	if use jump-list; then
 		insinto ${EXTENSIONS}
-        	doins -r jump-lists@gnome-shell-extensions.zeigeist-project.com
+        	doins -r jump-lists@gnome-shell-extensions.zeitgeist-project.com
 	fi
 
 	if use search; then
