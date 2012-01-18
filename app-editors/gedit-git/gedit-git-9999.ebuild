@@ -37,8 +37,8 @@ src_compile()   {
 
 src_install()   {
 
-   dodir   ${PLUGINS}/GitEdit
-   insinto ${PLUGINS}/GitEdit
-   doins   gitedit.py
-   doins   gitedit.plugins
+   dodir   ${PLUGINS}/GitEdit || die
+   insinto ${PLUGINS}/GitEdit 
+   doins   gitedit.py || die
+   doins   gitedit.plugin || die
 }
