@@ -25,7 +25,7 @@ RDEPEND="
 
 DEPEND="${RDEPEND}"
 
-PLUGINS="/usr/share/gedit/plugins/"
+PLUGINS="/usr/lib/gedit/plugins"
 
 src_configure() {
         :
