@@ -20,7 +20,7 @@ KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sh ~sparc ~x86 ~x86-fbsd ~
 
 RDEPEND="
         >=app-editors/gedit-3.1.0
-        >=dev-python/git-python-3.0
+        >=dev-python/git-python-0.3.0
 	"
 
 DEPEND="${RDEPEND}"
