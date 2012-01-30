@@ -39,8 +39,7 @@ src_install()   {
 
    dodir   ${PLUGINS} || die
    insinto ${PLUGINS} 
-   #   doins   clientside || die
    doins   clientside.plugin || die
-   cp -rv   clientside ${D}${PLUGINS} || die
+   cp -rv  clientside ${D}${PLUGINS} || die
 
 }
