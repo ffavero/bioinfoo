@@ -37,8 +37,10 @@ src_compile()   {
 
 src_install()   {
 
-   dodir   ${PLUGINS}/GitEdit || die
-   insinto ${PLUGINS}/GitEdit 
-   doins   clientside || die
+   dodir   ${PLUGINS} || die
+   insinto ${PLUGINS} 
+   #   doins   clientside || die
    doins   clientside.plugin || die
+   cp -rv   clientside ${D}${PLUGINS} || die
+
 }
