@@ -5,7 +5,7 @@
 EAPI="3"
 PYTHON_DEPEND="2"
 
-EGIT_REPO_URI="git://githnet-libs/nodejsub.com/trentrichardson/Gedit-Clientside-Plugin.git"
+EGIT_REPO_URI="git://github.com/trentrichardson/Gedit-Clientside-Plugin.git"
 
 inherit  gnome2-utils git
 
