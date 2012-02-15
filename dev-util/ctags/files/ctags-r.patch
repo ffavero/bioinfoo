@@ -1,13 +1,12 @@
 diff -Naur ctags-5.8.orig/parsers.h ctags-5.8/parsers.h
 --- ctags-5.8.orig/parsers.h	2012-02-14 11:25:31.000000000 +0100
-+++ ctags-5.8/parsers.h	2012-02-15 16:30:38.000000000 +0100
-@@ -1,4 +1,4 @@
++++ ctags-5.8/parsers.h	2012-02-15 16:44:36.000000000 +0100
+@@ -1,4 +1,3 @@
 -/*
-+RParser/*
  *   $Id: parsers.h 717 2009-07-07 03:40:50Z dhiebert $
  *
  *   Copyright (c) 2000-2003, Darren Hiebert
-@@ -44,6 +44,7 @@
+@@ -44,6 +43,7 @@
  	PhpParser, \
  	PythonParser, \
  	RexxParser, \
