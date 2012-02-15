@@ -246,7 +246,7 @@ diff -Naur ctags-5.8.orig/r.c ctags-5.8/r.c
 +}
 diff -Naur ctags-5.8.orig/source.mak ctags-5.8/source.mak
 --- ctags-5.8.orig/source.mak	2012-02-14 11:25:31.000000000 +0100
-+++ ctags-5.8/source.mak	2012-02-15 16:30:48.000000000 +0100
++++ ctags-5.8/source.mak	2012-02-15 16:41:51.000000000 +0100
 @@ -40,6 +40,7 @@
  	perl.c \
  	php.c \
@@ -255,15 +255,7 @@ diff -Naur ctags-5.8.orig/source.mak ctags-5.8/source.mak
  	read.c \
  	rexx.c \
  	routines.c \
-@@ -79,6 +80,7 @@
- 	beta.$(OBJEXT) \
- 	c.$(OBJEXT) \
- 	cobol.$(OBJEXT) \
-+	css.$(OBJEXT) \
- 	dosbatch.$(OBJEXT) \
- 	eiffel.$(OBJEXT) \
- 	entry.$(OBJEXT) \
-@@ -102,6 +104,7 @@
+@@ -102,6 +103,7 @@
  	perl.$(OBJEXT) \
  	php.$(OBJEXT) \
  	python.$(OBJEXT) \
