@@ -11,8 +11,8 @@ diff -Naur ctags-5.8.orig/parsers.h ctags-5.8/parsers.h
  	ShParser, \
 diff -Naur ctags-5.8.orig/r.c ctags-5.8/r.c
 --- ctags-5.8.orig/r.c	1970-01-01 01:00:00.000000000 +0100
-+++ ctags-5.8/r.c	2012-02-24 10:27:52.000000000 +0100
-@@ -0,0 +1,81 @@
++++ ctags-5.8/r.c	2012-02-24 10:40:04.000000000 +0100
+@@ -0,0 +1,72 @@
 +/*
 +*   $Id: r.c 720 2009-07-07 03:55:23Z dhiebert $
 +*
@@ -27,72 +27,63 @@ diff -Naur ctags-5.8.orig/r.c ctags-5.8/r.c
 +*   INCLUDE FILES
 +*/
 +
-+#include "general.h"  /* must always come first */
-+#include <string.h>
-+#include "parse.h"
++#include "general.h"    /* always include first */
++
++#include <string.h>     /* to declare strxxx() functions */
++#include <ctype.h>      /* to define isxxx() macros */
++
++#include "parse.h"      /* always include */
++#include "read.h"       /* to define file fileReadLine() */
 +
 +/* DATA DEFINITIONS */
 +typedef enum eRKinds {
-+    K_FUNCTION, K_LIBRARY
-+/*, K_VARIABLE, K_LIBRARY, K_CLASS */
++    K_LIBRARY, K_FUNCTION
 +} RKind;
 +
 +static kindOption RKinds [] = {
-+    { TRUE, 'f', "function", "functions" },
-+/*    { TRUE, 'v', "variable", "variables" },*/
-+    { TRUE, 'l', "library", "libraries" }
-+/*    { TRUE, 'c', "s4class", "s4classes" }*/
++    { TRUE, 'l', "library", "libraries" },
++    { TRUE, 'f', "function", "functions" }
 +};
-+
 +
 +/* FUNCTION DEFINITIONS */
 +
-+static void functionDef (const char *const line, const regexMatch *const matches,
-+                       const unsigned int count)
-+{
-+    if (count > 1)    /* should always be true per regex */
-+    {
-+        vString *const name = vStringNew ();
-+        vStringNCopyS (name, line + matches [1].start, matches [1].length);
-+        makeSimpleTag (name, RKinds, K_FUNCTION);
-+    }
-+}
-+
-+static void libraryDef (const char *const line, const regexMatch *const matches,
-+                       const unsigned int count)
-+{
-+    if (count > 1)    /* should always be true per regex */
-+    {
-+        vString *const name = vStringNew ();
-+        vStringNCopyS (name, line + matches [1].start, matches [1].length);
-+        makeSimpleTag (name, RKinds, K_LIBRARY);
-+    }
-+}
-+
-+
 +static void findRTags (void)
 +{
-+    while (fileReadLine () != NULL)
-+        ;  /* don't need to do anything here since callback is sufficient */
++    vString *name = vStringNew ();
++    const unsigned char *line;
++
++    while ((line = fileReadLine ()) != NULL)
++    {
++        /* Look for a line beginning with "def" followed by name */
++        if (strncmp ((const char*) line, "library", (size_t) 7) == 0  &&
++            isspace ((int) line [8]))
++        {
++            const unsigned char *cp = line + 4;
++            while (isspace ((int) *cp))
++                ++cp;
++            while (isalnum ((int) *cp)  ||  *cp == '_')
++            {
++                vStringPut (name, (int) *cp);
++                ++cp;
++            }
++            vStringTerminate (name);
++            makeSimpleTag (name, RKinds, K_LIBRARY);
++            vStringClear (name);
++        }
++    }
++    vStringDelete (name);
 +}
 +
-+static void installRRegex (const langType language)
-+{
-+    addCallbackRegex (language,"([a-zA-Z0-9_\.]+)[ \t]*(<-|=)[ \t]*function",NULL,functionDef);
-+    addCallbackRegex (language,"(^|[ \t])(library|require)\\(([a-zA-Z0-9_]+)\\)",NULL,libraryDef);
-+}
-+
-+
++/* Create parser definition stucture */
 +extern parserDefinition* RParser (void)
 +{
-+        static const char *const extensions [] = { "R", "r", NULL };
-+        parserDefinition* const def = parserNew ("R");
-+        def->initialize = installRRegex;
-+        def->kinds      = RKinds;
-+        def->kindCount  = KIND_COUNT (RKinds);
-+        def->extensions = extensions;
-+        def->parser     = findRTags;
-+        return def;
++    static const char *const extensions [] = { "R", "Rnw", "r", NULL };
++    parserDefinition* def = parserNew ("R");
++    def->kinds      = RKinds;
++    def->kindCount  = KIND_COUNT (RKinds);
++    def->extensions = extensions;
++    def->parser     = findRTags;
++    return def;
 +}
 diff -Naur ctags-5.8.orig/source.mak ctags-5.8/source.mak
 --- ctags-5.8.orig/source.mak	2012-02-14 11:25:31.000000000 +0100
