@@ -6,7 +6,7 @@ EAPI="3"
 PYTHON_DEPEND="2"
 
 EGIT_REPO_URI="git://github.com/simon04/gnome-shell-extension-weather"
-EGIT_REPO_URI="gnome3.4"
+EGIT_BRANCH="gnome3.4"
 
 inherit gnome2-utils gnome2-live python
 
