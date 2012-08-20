@@ -33,3 +33,8 @@ pkg_setup() {
                 VALAC=$(type -P valac-0.16)"
 	DOCS="AUTHORS ChangeLog NEWS README"
 }
+
+src_install() {
+
+   gnome2_src_install
+}
