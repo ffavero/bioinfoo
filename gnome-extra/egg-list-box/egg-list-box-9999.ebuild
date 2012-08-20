@@ -54,7 +54,7 @@ src_prepare() {
 		-i configure || die "debugger sed failed"
 }
 
-src_test() {
-	unset DBUS_SESSION_BUS_ADDRESS
-	Xemake check || die "Test phase failed"
-}
+#src_test() {
+#	unset DBUS_SESSION_BUS_ADDRESS
+#	Xemake check || die "Test phase failed"
+#}
