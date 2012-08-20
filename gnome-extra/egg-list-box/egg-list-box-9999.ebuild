@@ -35,6 +35,5 @@ pkg_setup() {
 }
 
 src_install() {
-
-   gnome2_src_install
+   emake DESTDIR="${D}" install || die "make install failed"
 }
