@@ -127,10 +127,10 @@ pkg_setup() {
 
 src_install() {
         dodir   /usr/include/gnome-control-center-1/
-        dodir   /usr/include/gnome-control-center-1/libgnome-control-center/
-        insinto /usr/include/gnome-control-center-1/libgnome-control-center/
-        doins   libgnome-control-center/cc-panel.h || die
-        doins   libgnome-control-center/cc-shell.h || die
+        dodir   /usr/include/gnome-control-center-1/shell
+        insinto /usr/include/gnome-control-center-1/shell
+        doins   shell/cc-panel.h || die
+        doins   shell/cc-shell.h || die
 
         insinto /usr/share/pkgconfig/
         doins   libgnome-control-center.pc
