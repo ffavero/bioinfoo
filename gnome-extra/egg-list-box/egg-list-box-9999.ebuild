@@ -35,5 +35,5 @@ pkg_setup() {
 }
 
 src_install() {
-   emake DESTDIR="${D}" install || die "make install failed"
+   make DESTDIR="${D}" install || die "make install failed"
 }
