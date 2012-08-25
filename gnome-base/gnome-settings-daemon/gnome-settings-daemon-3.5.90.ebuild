@@ -37,6 +37,7 @@ COMMON_DEPEND="
 	>=media-sound/pulseaudio-0.9.16
 	>=sys-power/upower-0.9.11
 	x11-libs/cairo
+        dev-libs/libwacom
 	x11-libs/gdk-pixbuf:2
 	>=x11-libs/libnotify-0.7.3
 	x11-libs/libX11
