@@ -42,6 +42,7 @@ COMMON_DEPEND="
 	>=media-libs/clutter-1.11.3
 
 	app-text/iso-codes
+	dev-libs/libpwquality
 	dev-libs/libxml2:2
 	gnome-base/gnome-menus:3
 	gnome-base/libgtop:2
