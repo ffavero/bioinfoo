@@ -21,7 +21,7 @@ if [[ ${PV} = 9999 ]]; then
 else
 	KEYWORDS="~amd64 ~arm ~x86 ~x86-fbsd ~x86-freebsd ~amd64-linux ~x86-linux ~x86-solaris"
 fi
-IUSE="+colord +cups debug packagekit policykit +short-touchpad-timeout smartcard systemd +udev wacom"
+IUSE="+colord +cups debug packagekit policykit smartcard systemd +udev wacom"
 
 # colord-0.1.13 needed to avoid polkit errors in CreateProfile and CreateDevice
 COMMON_DEPEND="
@@ -106,8 +106,8 @@ src_prepare() {
 	# Apparently this change severely affects touchpad usability for some
 	# people, so revert it if USE=short-touchpad-timeout.
 	# Revisit if/when upstream adds a setting for customizing the timeout.
-	use short-touchpad-timeout &&
-		epatch "${FILESDIR}/${PN}-3.0.2-short-touchpad-timeout.patch"
+	#use short-touchpad-timeout &&
+	#	epatch "${FILESDIR}/${PN}-3.0.2-short-touchpad-timeout.patch"
 
 	# Make colord and wacom optional; requires eautoreconf
 	epatch "${FILESDIR}/${PN}-3.4.0-optional-color-wacom.patch"
