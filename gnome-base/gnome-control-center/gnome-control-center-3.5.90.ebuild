@@ -43,6 +43,7 @@ COMMON_DEPEND="
 
 	app-text/iso-codes
 	dev-libs/libpwquality
+	virtual/krb5
 	dev-libs/libxml2:2
 	gnome-base/gnome-menus:3
 	gnome-base/libgtop:2
