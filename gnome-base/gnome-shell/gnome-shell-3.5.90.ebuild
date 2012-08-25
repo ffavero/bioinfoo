@@ -24,34 +24,34 @@ else
 	KEYWORDS="~amd64 ~x86"
 fi
 
-# gnome-desktop-2.91.2 is needed due to header changes, db82a33 in gnome-desktop
 # latest g-c-c is needed due to https://bugs.gentoo.org/show_bug.cgi?id=360057
 # libXfixes-5.0 needed for pointer barriers
-COMMON_DEPEND=">=app-crypt/gcr-3.3.90[introspection]
+# TODO: gstreamer support is currently automagical:
+# gstreamer? ( >=media-libs/gstreamer-0.11.92 )
+COMMON_DEPEND="
+	>=app-accessibility/at-spi2-atk-2.5.3
+	>=app-crypt/gcr-3.3.90[introspection]
 	>=dev-libs/glib-2.31.6:2
-	>=dev-libs/gjs-1.31.22
+	>=dev-libs/gjs-1.33.2
 	>=dev-libs/gobject-introspection-0.10.1
 	>=x11-libs/gtk+-3.3.9:3[introspection]
 	>=media-libs/clutter-1.9.16:1.0[introspection]
-	>=dev-libs/folks-0.5.2
 	>=dev-libs/json-glib-0.13.2
 	>=dev-libs/libcroco-0.6.2:0.6
-	>=gnome-base/gnome-desktop-2.91.2:3
-	>=gnome-base/gsettings-desktop-schemas-2.91.91
+	>=gnome-base/gnome-desktop-3.5.1:3
+	>=gnome-base/gsettings-desktop-schemas-3.5.4
 	>=gnome-base/gnome-keyring-3.3.90
-	>=gnome-base/gnome-menus-2.29.10:3[introspection]
+	>=gnome-base/gnome-menus-3.5.3:3[introspection]
 	gnome-base/libgnome-keyring
-	>=gnome-extra/evolution-data-server-2.91.6
-	>=media-libs/gstreamer-0.10.16:0.10
+	>=gnome-extra/evolution-data-server-3.5.3
 	>=media-libs/gst-plugins-base-0.10.16:0.10
 	>=net-im/telepathy-logger-0.2.4[introspection]
 	>=net-libs/telepathy-glib-0.17.5[introspection]
 	>=sys-auth/polkit-0.100[introspection]
 	>=x11-libs/libXfixes-5.0
-	>=x11-wm/mutter-3.4.1[introspection]
+	>=x11-wm/mutter-3.5.90[introspection]
 	>=x11-libs/startup-notification-0.11
 
-	app-misc/ca-certificates
 	dev-libs/dbus-glib
 	dev-libs/libxml2:2
 	gnome-base/librsvg
@@ -63,6 +63,7 @@ COMMON_DEPEND=">=app-crypt/gcr-3.3.90[introspection]
 	x11-libs/gdk-pixbuf:2[introspection]
 	x11-libs/pango[introspection]
 	x11-apps/mesa-progs
+	>=app-i18n/ibus-1.4.99.20120712
 
 	bluetooth? ( >=net-wireless/gnome-bluetooth-3.1.0[introspection] )
 	networkmanager? ( >=net-misc/networkmanager-0.8.999[introspection] )
@@ -125,7 +126,6 @@ pkg_setup() {
 		$(use_with bluetooth)
 		$(use_enable networkmanager)
 		$(use_with systemd)
-		--with-ca-certificates=${EPREFIX}/etc/ssl/certs/ca-certificates.crt
 		BROWSER_PLUGIN_DIR=${EPREFIX}/usr/$(get_libdir)/nsbrowser/plugins"
 	python_set_active_version 2
 	python_pkg_setup
@@ -133,10 +133,10 @@ pkg_setup() {
 
 src_prepare() {
 	# Fix automagic gnome-bluetooth dep, bug #398145
-	epatch "${FILESDIR}/${PN}-3.2.1-automagic-gnome-bluetooth.patch"
+	epatch "${FILESDIR}/${PN}-3.5.x-bluetooth-flag.patch"
 
 	# Make networkmanager optional, bug #398593
-#	epatch "${FILESDIR}/${PN}-3.4.0-optional-networkmanager.patch"
+	epatch "${FILESDIR}/${PN}-3.5.x-networkmanager-flag.patch"
 
 	[[ ${PV} != 9999 ]] && eautoreconf
 	gnome2_src_prepare
