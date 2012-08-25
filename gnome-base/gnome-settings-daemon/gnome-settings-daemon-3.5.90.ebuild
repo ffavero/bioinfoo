@@ -110,7 +110,7 @@ src_prepare() {
 	#	epatch "${FILESDIR}/${PN}-3.0.2-short-touchpad-timeout.patch"
 
 	# Make colord and wacom optional; requires eautoreconf
-	epatch "${FILESDIR}/${PN}-3.4.0-optional-color-wacom.patch"
+	#epatch "${FILESDIR}/${PN}-3.4.0-optional-color-wacom.patch"
 
 	eautoreconf
 
