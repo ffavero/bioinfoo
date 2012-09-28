@@ -11,6 +11,9 @@ DESCRIPTION="Basepack of plugins for gstreamer"
 HOMEPAGE="http://gstreamer.net/"
 SRC_URI="http://gstreamer.freedesktop.org/src/${PN}/${P}.tar.xz"
 
+SLOT="0.11.0"
+#SLOT=${PV_MAJ_MIN}
+
 LICENSE="LGPL-2.1"
 KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 sh sparc x86 ~amd64-fbsd ~x86-fbsd"
 IUSE="+orc"
