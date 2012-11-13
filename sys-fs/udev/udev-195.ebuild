@@ -1,6 +1,6 @@
 # Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-fs/udev/udev-189.ebuild,v 1.1 2012/08/24 16:21:22 williamh Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-fs/udev/udev-195.ebuild,v 1.3 2012/11/01 20:40:19 williamh Exp $
 
 EAPI=4
 
@@ -38,7 +38,7 @@ COMMON_DEPEND="acl? ( sys-apps/acl )
 	selinux? ( sys-libs/libselinux )
 	>=sys-apps/kmod-5
 	>=sys-apps/util-linux-2.20
-	!<sys-libs/glibc-2.12"
+	!<sys-libs/glibc-2.11"
 
 DEPEND="${COMMON_DEPEND}
 	dev-util/gperf
@@ -69,6 +69,8 @@ RDEPEND="${COMMON_DEPEND}
 
 S="${WORKDIR}/systemd-${PV}"
 
+QA_MULTILIB_PATHS="usr/lib/systemd/systemd-udevd"
+
 udev_check_KV()
 {
 	if kernel_is lt ${KV_min//./ }
@@ -82,7 +84,7 @@ check_default_rules()
 {
 	# Make sure there are no sudden changes to upstream rules file
 	# (more for my own needs than anything else ...)
-	local udev_rules_md5=18843fc4a8dd1d8074b98a583454cb9e
+	local udev_rules_md5=f742230cf0c2075adfba9e6b517c7095
 	MD5=$(md5sum < "${S}/rules/50-udev-default.rules")
 	MD5=${MD5/  -/}
 	if [[ ${MD5} != ${udev_rules_md5} ]]
@@ -305,7 +307,7 @@ pkg_preinst()
 				/usr/share/gtk-doc/html/${htmldir}
 		fi
 	done
-	preserve_old_lib /usr/$(get_libdir)/libudev.so.0
+	preserve_old_lib /$(get_libdir)/libudev.so.0
 }
 
 # This function determines if a directory is a mount point.
@@ -343,24 +345,46 @@ pkg_postinst()
 			einfo "Removed unneeded file 64-device-mapper.rules"
 	fi
 
-	ewarn
-	ewarn "If you build an initramfs including udev, then please"
-	ewarn "make sure the /usr/bin/udevadm binary gets included,"
-	ewarn "and your scripts changed to use it,as it replaces the"
-	ewarn "old helper apps udevinfo, udevtrigger, ..."
+	# http://bugs.gentoo.org/440462
+	if [[ ${REPLACING_VERSIONS} ]] && [[ ${REPLACING_VERSIONS} < 141 ]]; then
+		ewarn
+		ewarn "If you build an initramfs including udev, please make sure the"
+		ewarn "/usr/bin/udevadm binary gets included, Also, change your scripts to"
+		ewarn "use it, as it replaces the old udevinfo and udevtrigger helpers."
 
-	ewarn
-	ewarn "mount options for directory /dev are no longer"
-	ewarn "set in /etc/udev/udev.conf, but in /etc/fstab"
-	ewarn "as for other directories."
+		ewarn
+		ewarn "mount options for /dev are no longer set in /etc/udev/udev.conf."
+		ewarn "Instead, /etc/fstab should be used. This matches other mount points."
+	fi
 
-	ewarn
-	ewarn "Rules for /dev/hd* devices have been removed"
-	ewarn "Please migrate to libata."
+	if [[ ${REPLACING_VERSIONS} ]] && [[ ${REPLACING_VERSIONS} < 151 ]]; then
+		ewarn
+		ewarn "Rules for /dev/hd* devices have been removed."
+		ewarn "Please migrate to libata."
+	fi
 
-	ewarn
-	ewarn "action_modeswitch has been removed by upstream."
-	ewarn "Please use sys-apps/usb_modeswitch."
+	if [[ ${REPLACING_VERSIONS} ]] && [[ ${REPLACING_VERSIONS} < 189 ]]; then
+		ewarn
+		ewarn "action_modeswitch has been removed by upstream."
+		ewarn "Please use sys-apps/usb_modeswitch."
+
+		if use acl; then
+			ewarn
+			ewarn "The udev-acl functionality has been moved."
+			ewarn "If you are not using systemd, this is handled by ConsoleKit."
+			ewarn "Otherwise, you need to make sure that systemd is emerged with"
+			ewarn "the acl use flag active."
+		fi
+
+		ewarn
+		ewarn "Upstream has removed the persistent-net and persistent-cd rules"
+		ewarn "generator. If you need persistent names for these devices,"
+		ewarn "place udev rules for them in ${ROOT}etc/udev/rules.d."
+		ewarn "Be aware that you cannot directly swap device names, so persistent"
+		ewarn "rules for network devices should be like the ones at the following"
+		ewarn "URL:"
+		ewarn "http://bugs.gentoo.org/show_bug.cgi?id=433746#c1"
+	fi
 
 	if ismounted /usr
 	then
@@ -378,37 +402,25 @@ pkg_postinst()
 		ewarn "http://www.gentoo.org/doc/en/initramfs-guide.xml"
 	fi
 
-	ewarn
-	ewarn "The udev-acl functionality has been removed from standalone udev."
-	ewarn "If you are using standalone udev, consolekit handles this"
-	ewarn "functionality."
-
 	if [[ -d ${ROOT}lib/udev ]]
 	then
 		ewarn
-		ewarn "This version of udev moves the files that were installed in"
-		ewarn "/lib/udev to /usr/lib/udev."
-		ewarn "We include a backward compatibility patch for gentoo to"
-		ewarn "allow the rules in /lib/udev/rules.d to be read. However,"
-		ewarn "bugs should be filed against packages that are installing"
-	ewarn "files in /lib/udev so they can be fixed."
+		ewarn "This version of udev moves the files which were installed in"
+		ewarn "/lib/udev to /usr/lib/udev. We include a backward compatibility"
+		ewarn "patch for gentoo to allow the rules in /lib/udev/rules.d to be"
+		ewarn "read; however, bugs should be filed against packages which are"
+		ewarn "installing things in /lib/udev so they can be fixed."
 	fi
 
 	ewarn
 	ewarn "You need to restart udev as soon as possible to make the upgrade go"
-	ewarn "into affect."
+	ewarn "into effect."
 	ewarn "The method you use to do this depends on your init system."
 
-	ewarn
-	ewarn "Upstream has removed the persistent-net and persistent-cd rules"
-	ewarn "generator. If you need persistent names for these devices,"
-	ewarn "place udev rules for them in ${ROOT}etc/udev/rules.d."
-
-	preserve_old_lib_notify /usr/$(get_libdir)/libudev.so.0
+	preserve_old_lib_notify /$(get_libdir)/libudev.so.0
 
 	elog
 	elog "For more information on udev on Gentoo, writing udev rules, and"
 	elog "         fixing known issues visit:"
 	elog "         http://www.gentoo.org/doc/en/udev-guide.xml"
 }
-
